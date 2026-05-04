@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tiki Topple</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ══ STEP 1: SPLASH / COUNT ══ -->
+  <div id="step-splash" class="screen active">
+    <div class="splash-bg"></div>
+    <div class="splash-particles" id="splash-particles"></div>
+    <div class="splash-content">
+      <div class="logo-stack">
+        <div class="tikis-row">
+          <span class="tiki-float t1">🗿</span>
+          <span class="tiki-float t2">🌊</span>
+          <span class="tiki-float t3">🔥</span>
+        </div>
+        <h1 class="logo">TIKI TOPPLE</h1>
+        <p class="tagline">Stack 'em. Topple 'em. Rule the island.</p>
+      </div>
+      <div class="card-panel">
+        <h2 class="step-title">How many players?</h2>
+        <div class="big-count-row">
+          <button class="count-btn active" data-count="2">2</button>
+          <button class="count-btn" data-count="3">3</button>
+          <button class="count-btn" data-count="4">4</button>
+        </div>
+
+        <!-- THEME SELECTOR -->
+        <div class="theme-section">
+          <label class="option-label">🎨 Board Theme</label>
+          <div class="theme-grid">
+            <button class="theme-btn active" data-theme="ocean" title="Ocean Night">🌊<span>Ocean</span></button>
+            <button class="theme-btn" data-theme="volcano" title="Volcano">🌋<span>Volcano</span></button>
+            <button class="theme-btn" data-theme="jungle" title="Jungle">🌿<span>Jungle</span></button>
+            <button class="theme-btn" data-theme="sunset" title="Sunset">🌅<span>Sunset</span></button>
+            <button class="theme-btn" data-theme="neon" title="Neon Rave">⚡<span>Neon</span></button>
+            <button class="theme-btn" data-theme="gold" title="Golden Temple">✨<span>Golden</span></button>
+          </div>
+        </div>
+
+        <button class="btn-next" id="splash-next">Choose Player Types →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STEP 2: HUMAN vs AI MIX ══ -->
+  <div id="step-mix" class="screen">
+    <div class="splash-bg"></div>
+    <div class="setup-content">
+      <h1 class="logo small">TIKI TOPPLE</h1>
+      <div class="card-panel wide">
+        <button class="btn-back" id="mix-back">← Back</button>
+        <h2 class="step-title" id="mix-title">Who's playing?</h2>
+        <div id="mix-slots" class="mix-slots"></div>
+        <button class="btn-next" id="mix-next">Customize Characters →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STEP 3: CHARACTER CUSTOMIZER ══ -->
+  <div id="step-chars" class="screen">
+    <div class="splash-bg"></div>
+    <div class="setup-content">
+      <h1 class="logo small">TIKI TOPPLE</h1>
+      <div class="card-panel wide char-wide">
+        <button class="btn-back" id="chars-back">← Back</button>
+        <h2 class="step-title">Customize Your Characters</h2>
+        <div id="char-tabs" class="char-tabs"></div>
+        <div id="char-editor" class="char-editor"></div>
+        <button class="btn-next" id="chars-next">Start Game 🌺</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GAME SCREEN ══ -->
+  <div id="step-game" class="screen">
+    <header class="game-header">
+      <h1 class="logo small">TIKI TOPPLE</h1>
+      <div id="scores-container" class="scores"></div>
+      <button id="sound-toggle" class="icon-btn" title="Toggle Sound">🔊</button>
+    </header>
+
+    <div id="game-over-panel" class="overlay-panel hidden">
+      <div class="overlay-inner">
+        <h2 class="over-title">🏝️ Round Over!</h2>
+        <div id="results-container" class="results"></div>
+        <div class="over-buttons">
+          <button class="btn-next" onclick="window.startNextRound()">▶ Next Round</button>
+          <button class="btn-secondary" onclick="window.goToStart()">⚙ New Game</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="game-layout" class="game-layout">
+
+      <div class="left-panel">
+        <div class="glass-panel obj-panel">
+          <div class="obj-header">
+            <div id="current-avatar" class="avatar-display"></div>
+            <div class="obj-header-text">
+              <h3 id="turn-player-name">Player's Turn</h3>
+              <span id="turn-badge" class="turn-badge">YOUR TURN</span>
+            </div>
+          </div>
+          <button id="toggle-objective-btn" class="btn-reveal">🔍 Reveal Objective</button>
+          <div id="objective-details" class="objective-details hidden">
+            <ul id="objective-list" class="objective-list"></ul>
+          </div>
+        </div>
+        <div class="glass-panel hint-panel">
+          <p id="hint-text" class="hint-text">① Pick a card from your hand</p>
+          <div id="selected-notice" class="selected-notice hidden">
+            <span id="selected-card-preview" class="selected-card-preview"></span>
+            <span>Now tap a Tiki!</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER: Tiki Board (small physical pole style) -->
+      <div class="center-panel">
+        <div class="board-wrap glass-panel">
+          <div class="board-label pole-top-label">▲ TOP OF POLE</div>
+          <div class="tiki-pole-wrap">
+            <div class="tiki-pole-bar"></div>
+            <div id="tiki-line" class="tiki-line"></div>
+          </div>
+          <div class="board-label">▼ BOTTOM</div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Big Playing Cards -->
+      <div class="right-panel">
+        <div class="glass-panel hand-panel">
+          <h3 class="hand-title">✋ Your Hand</h3>
+          <div id="cards-stack" class="cards-stack"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div id="game-notice" class="game-notice"></div>
+<script src="app.js"></script>
+</body>
+</html>
