@@ -11,3 +11,5 @@ A fun browser-based strategy game where players stack and topple Tikis.
 - HTML
 - CSS
 - JavaScript
+ ## ▶️ Play Game
+tiki-topple-game.netlify.app
